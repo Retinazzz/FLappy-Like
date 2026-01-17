@@ -5,24 +5,24 @@ public class UI: MonoBehaviour
 {    
     [SerializeField] private GameObject _playScreenPanel;
     [SerializeField] private GameObject _deathScreenPanel;
-
-    private void OnEnable ()
+    [SerializeField] private GameManager _gameManager;
+    private void OnEnable()
     {
-        if (Instance != null)
+        if (_gameManager != null)
         {
-            Instance.OnGameStateChanged.AddListener(OnGameStateChanged);
+            _gameManager.OnGameStateChanged.AddListener(OnGameStateChanged);
         }
     }
 
-    private void OnDisable ()
+    private void OnDisable()
     {
-        if (Instance != null)
+        if (_gameManager != null)
         {
-            Instance.OnGameStateChanged.RemoveListener(OnGameStateChanged);
+            _gameManager.OnGameStateChanged.RemoveListener(OnGameStateChanged);
         }
     }
 
-    public void OnGameStateChanged (GameState newState)
+    public void OnGameStateChanged(GameState newState)
     {        
         switch (newState)
         {
@@ -36,25 +36,24 @@ public class UI: MonoBehaviour
                 {
                     ShowDeathScreen();
                     break;
-                }
-                
+                }                
         }
     }
 
-    private void ShowPlayScreen ()
+    private void ShowPlayScreen()
     {
         _playScreenPanel.SetActive(true);
         _deathScreenPanel.SetActive(false);
     }
 
-    private void ShowDeathScreen ()
+    private void ShowDeathScreen()
     {
         _playScreenPanel.SetActive(false);
         _deathScreenPanel.SetActive(true);
     }
 
-    public void OnRestartButtonClicked ()
+    public void OnRestartButtonClicked()
     {
-        Instance.RestartGame();
+        _gameManager.RestartGame();
     }
 }

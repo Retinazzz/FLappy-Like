@@ -2,19 +2,19 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
-{
-    public static GameManager Instance { get; private set; }
-
+{    
     [SerializeField] private GameState _currentState = GameState.PlayScreen;
     [SerializeField] private GameObject _player;
-    
+    [SerializeField] private Score _score;
     
     public UnityEvent<GameState> OnGameStateChanged;
+
     public enum GameState
     {
         PlayScreen,
         DeathScreen
     }
+
     public GameState CurrentState
     {
         get => _currentState;
@@ -27,33 +27,23 @@ public class GameManager : MonoBehaviour
                 ScreenChanger();
             }
         }
-    }
-    private void Awake ()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    private void Start ()
+    }        
+
+    private void Start()
     {
         StartGame();
     }
 
-    private void StartGame ()
+    private void StartGame()
     {
         ChangeState(GameState.PlayScreen);
     }
-    public void ChangeState (GameState newState)
+
+    public void ChangeState(GameState newState)
     {
         CurrentState = newState;
     }
-    private void ScreenChanger ()
+    private void ScreenChanger()
     {
         switch (_currentState)
         {
@@ -67,39 +57,36 @@ public class GameManager : MonoBehaviour
                 {
                     EnterDeathScreen();
                     break;
-                }
-                
+                }                
         }
     }
 
-    private void EnterPlayScreen ()
+    private void EnterPlayScreen()
     {
         Time.timeScale = 1f;        
         Debug.Log("Entered Play Screen");
         Instantiate(_player);
-        Score.Instance.ResetScore();
+        _score.ResetScore();
     }
 
-    private void EnterDeathScreen ()
+    private void EnterDeathScreen()
     {
         Time.timeScale = 0f;
         Debug.Log("Entered Death Screen");
-        Score.Instance.ShowScoreOnDeath();
-        
+        _score.ShowScoreOnDeath();        
     }
 
-    public void PlayerDied ()
+    public void PlayerDied()
     {
         ChangeState(GameState.DeathScreen);
     }
-
-    public void RestartGame ()
+    public void RestartGame()
     {
         ChangeState(GameState.PlayScreen);
         EnemyClear();
     }
 
-    void EnemyClear ()
+    void EnemyClear()
     {
         EnemyDeath [] allEnemies = FindObjectsOfType<EnemyDeath>();
         foreach (EnemyDeath enemy in allEnemies)

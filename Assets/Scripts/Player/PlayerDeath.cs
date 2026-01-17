@@ -4,21 +4,19 @@ public class PlayerDeath : MonoBehaviour
 {
     [SerializeField] private GameObject _player;
     [SerializeField] private BoxCollider2D _col;
-    private void OnTriggerEnter2D (Collider2D collision)
+    [SerializeField] private GameManager _gameManager;
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy") || ( collision.CompareTag("EnemyBullet")) || (collision.CompareTag("Wall")))
+        if (collision.TryGetComponent(out EnemyMovement enemy) || ( collision.TryGetComponent(out Bullet bullet)) || (collision.TryGetComponent(out Wall wall)))
         {
             Death();
-        }
-        
+        }        
     }
-    public void Death ()
+
+    public void Death()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.PlayerDied();
-        }
-        Destroy(_player);        
-    }
-    
+        _gameManager.PlayerDied();
+        Destroy(gameObject);        
+    }    
 }

@@ -3,26 +3,20 @@ using UnityEngine;
 public class EnemyDeath : MonoBehaviour
 {
     [SerializeField] private int _scoreValue = 1;
-
-    private BoxCollider2D _col;    
-    private void Awake ()
+    [SerializeField] private BoxCollider2D _col;
+    [SerializeField] private Score _score;   
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        _col = GetComponent<BoxCollider2D>();        
-    }
-    
-    private void OnTriggerEnter2D (Collider2D collision)
-    {
-        if (collision.CompareTag("Wall") || collision.CompareTag("Player"))
+        if (collision.TryGetComponent(out Wall wall) || collision.TryGetComponent(out PlayerMovement player))
         {
             Debug.Log("Lomaysa hOmyak");
             Death();
-        }
-        
-    }
-    private void Death ()
-    {
-        Score.Instance.AddScore(_scoreValue);
-        Destroy(this.gameObject);
+        }        
     }
 
+    private void Death()
+    {
+        _score.AddScore(_scoreValue);
+        Destroy(gameObject);
+    }
 }
