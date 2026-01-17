@@ -5,6 +5,7 @@ public class Shoot : MonoBehaviour
     [SerializeField] private  GameObject _playerBullet;
     [SerializeField] Transform _shootingPoint;
     private IInputSystem _inputSystem;
+
     private void Awake()
     {
         _inputSystem = new InputSystem();

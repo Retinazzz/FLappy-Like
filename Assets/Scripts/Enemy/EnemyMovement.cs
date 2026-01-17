@@ -3,18 +3,13 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
-    private Transform _pos;
+    [SerializeField] private Transform _transform;
     private Vector2 _target;
-    private int _distanceToTarget = 1000;
-
-    private void Awake()
-    {
-        _pos = GetComponent<Transform>();
-    }
+    private int _distanceToTarget = 1000;    
 
     private void Start()
     {
-        _target = new Vector2(_pos.position.x - _distanceToTarget, _pos.position.y);
+        _target = new Vector2(_transform.position.x - _distanceToTarget, _transform.position.y);
     }
 
     private void Update()
