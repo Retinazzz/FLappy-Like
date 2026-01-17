@@ -10,17 +10,17 @@ public class Bullet : MonoBehaviour
     [SerializeField] private EnemyMovement _enemy;
     private Vector2 _target;
 
-    private void Awake ()
+    private void Awake()
     {
         _target = new Vector2(_transform.position.x - _shootingDistance, _transform.position.y);
     }
 
-    private void Update ()
+    private void Update()
     {
         transform.position = Vector2.MoveTowards(_transform.position, _target, _speed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D (Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Wall wall))
         {
