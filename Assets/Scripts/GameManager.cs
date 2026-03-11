@@ -1,14 +1,15 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IService
 {    
     [SerializeField] private GameState _currentState = GameState.PlayScreen;
     [SerializeField] private GameObject _player;
     [SerializeField] private Score _score;
     
-    public UnityEvent<GameState> OnGameStateChanged;
-
+    public UnityEvent <GameState> OnGameStateChanged;
+    
     public enum GameState
     {
         PlayScreen,
@@ -23,11 +24,23 @@ public class GameManager : MonoBehaviour
             if (_currentState != value)
             {
                 _currentState = value;
-                OnGameStateChanged?.Invoke(_currentState);
-                ScreenChanger();
+                Debug.Log("&&&&&&&&&&&&&&&&&&&&&&&&");
+                //OnGameStateChanged?.Invoke(_currentState);
+                //ScreenChanger();
             }
         }
-    }        
+    }
+
+    private void Awake()
+    {
+        //ServiceLocator.Register(this);
+        //Init();
+    }
+
+    public void Init()
+    {
+        ServiceLocator.Get<GameManager>();
+    }
 
     private void Start()
     {
@@ -41,11 +54,15 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState(GameState newState)
     {
+        Debug.Log(newState);
         CurrentState = newState;
+        OnGameStateChanged?.Invoke(CurrentState);
+        ScreenChanger();        
     }
+
     private void ScreenChanger()
     {
-        switch (_currentState)
+        switch (CurrentState)
         {
             case GameState.PlayScreen:
                 {
@@ -77,7 +94,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void PlayerDied()
-    {
+    {        
+        Debug.Log("PlayerDIed");
         ChangeState(GameState.DeathScreen);
     }
     public void RestartGame()

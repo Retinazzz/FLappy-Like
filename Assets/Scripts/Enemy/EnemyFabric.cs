@@ -11,18 +11,19 @@ public class EnemyFabric : MonoBehaviour
     private float _timer = 0f;
 
     private void Start()
+    {        
+        StartCoroutine(Create());        
+    }        
+
+    private IEnumerator Create()
     {
         while (true)
         {
             float randompos = Random.Range(_minRandomRange, _maxRandomRange);
-            StartCoroutine(Create(new Vector2(_posToSpawn.x, (_posToSpawn.y + randompos))));
-        }
-    }        
-
-    private IEnumerator Create(Vector2 spawnPoint)
-    {
-        Instantiate(_enemy, spawnPoint, Quaternion.identity);
-        yield return new WaitForSeconds(_spawnInterval);
+            Vector2 spawnPosition = new Vector2(_posToSpawn.x, _posToSpawn.y + randompos);
+            Instantiate(_enemy, spawnPosition, Quaternion.identity);
+            yield return new WaitForSeconds(_spawnInterval);
+        }        
     }
 }
     

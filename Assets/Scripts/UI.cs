@@ -1,41 +1,57 @@
 using UnityEngine;
 using static GameManager;
 
-public class UI: MonoBehaviour
+public class UI: MonoBehaviour , IService
 {    
     [SerializeField] private GameObject _playScreenPanel;
     [SerializeField] private GameObject _deathScreenPanel;
-    [SerializeField] private GameManager _gameManager;
-    private void OnEnable()
+    //private GameManager _gameManager;    
+
+    public void Init()
     {
-        if (_gameManager != null)
-        {
-            _gameManager.OnGameStateChanged.AddListener(OnGameStateChanged);
-        }
+        ServiceLocator.Get<UI>();        
     }
 
-    private void OnDisable()
+    private void Awake()
     {
-        if (_gameManager != null)
-        {
-            _gameManager.OnGameStateChanged.RemoveListener(OnGameStateChanged);
-        }
+        
     }
 
-    public void OnGameStateChanged(GameState newState)
-    {        
+    private void Start()
+    {
+        Debug.Log("1st awakeninn");
+        if (ServiceLocator.Get<GameManager>() == null)
+        {
+            Debug.LogError("GameManager не найден!");
+            return;
+        }
+        // Подписываемся
+        //ServiceLocator.Get<GameManager>().OnGameStateChanged.AddListener(StateChanged);
+        ServiceLocator.Get<GameManager>().OnGameStateChanged.AddListener(StateChanged);
+        Debug.Log("___________________");
+
+        //StateChanged(ServiceLocator.Get<GameManager>().CurrentState);
+        Debug.Log(ServiceLocator.Get<GameManager>().CurrentState + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        //ServiceLocator.Current.Get<_>();
+    }
+
+    public void StateChanged(GameState newState)
+    {
+        //Debug.Log(newState + "APAPPAPAPAPAPPA");
         switch (newState)
         {
             case GameState.PlayScreen:
                 {
                     ShowPlayScreen();
+                    Debug.Log("show1");
                     break;
                 }
                
             case GameState.DeathScreen:
                 {
                     ShowDeathScreen();
-                    break;
+                    Debug.Log("show2");
+                    break;                    
                 }                
         }
     }
@@ -54,6 +70,10 @@ public class UI: MonoBehaviour
 
     public void OnRestartButtonClicked()
     {
-        _gameManager.RestartGame();
+        ServiceLocator.Get<GameManager>().RestartGame();
+    }
+    private void OnDisable()
+    {
+        ServiceLocator.Get<GameManager>().OnGameStateChanged.RemoveAllListeners();
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemySHoot : MonoBehaviour
+public class EnemyShoot : MonoBehaviour
 {
     [SerializeField] private float _shootingInterval = 2f;
     [SerializeField] private GameObject _bullet;

@@ -4,36 +4,27 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float _speed = 100f;
     [SerializeField] private int _shootingDistance;
-    [SerializeField] private GameObject _bullet;
-    [SerializeField] private Transform _transform;
-    [SerializeField] private PlayerMovement _player;
-    [SerializeField] private EnemyMovement _enemy;
+    [SerializeField] private GameObject _bullet;    
     private Vector2 _target;
 
-    private void Awake()
+    public bool _isEnemy;
+
+    private void Awake ()
     {
-        _target = new Vector2(_transform.position.x - _shootingDistance, _transform.position.y);
+        _target = new Vector2(transform.position.x - _shootingDistance, transform.position.y);
     }
 
-    private void Update()
+    private void Update ()
     {
-        transform.position = Vector2.MoveTowards(_transform.position, _target, _speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, _target, _speed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D (Collider2D collision)
     {
-        if (collision.TryGetComponent(out Wall wall))
+        if (collision.TryGetComponent(out IObstacle wall) || (collision.TryGetComponent(out IDamagable player) && _isEnemy == true) || (collision.TryGetComponent(out IDamagable enemy) && _isEnemy == false))
         {
-            Destroy(_bullet);
-        }
-        else if (collision.TryGetComponent(out _player))
-        {
-            Destroy(_bullet);
-        }
-        else if (collision.TryGetComponent(out _enemy))
-        {
-            Destroy(_bullet);
-        }
+            Destroy(gameObject);
+        }        
     }
 }
 

@@ -1,7 +1,11 @@
 using System;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public interface IDamagable
+{
+
+}
+public class PlayerMovement : MonoBehaviour , IDamagable , IService
 {    
     [SerializeField] private Rigidbody2D _jumper;
     [SerializeField] private float _forceOnJump = 0.3f;
