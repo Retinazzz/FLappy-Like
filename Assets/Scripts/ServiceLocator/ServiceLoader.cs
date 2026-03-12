@@ -11,17 +11,14 @@ public class ServiceLoader : MonoBehaviour
     private UI _ui;
 
     private void Awake()
-    {
-        //_gameManager = new GameManager();
-        //_ui = new UI();
+    {        
         RegisterServices();
         Init();        
     }
 
     private void RegisterServices()
     {
-        ServiceLocator.Initialize();
-        Debug.Log("REGISTEER");
+        ServiceLocator.Initialize();        
         ServiceLocator.Register(_player);
         ServiceLocator.Register(_gameManager1);
         ServiceLocator.Register(_ui);

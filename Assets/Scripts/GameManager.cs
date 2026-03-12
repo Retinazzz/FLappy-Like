@@ -23,19 +23,10 @@ public class GameManager : MonoBehaviour, IService
         {
             if (_currentState != value)
             {
-                _currentState = value;
-                Debug.Log("&&&&&&&&&&&&&&&&&&&&&&&&");
-                //OnGameStateChanged?.Invoke(_currentState);
-                //ScreenChanger();
+                _currentState = value;                
             }
         }
-    }
-
-    private void Awake()
-    {
-        //ServiceLocator.Register(this);
-        //Init();
-    }
+    }       
 
     public void Init()
     {
