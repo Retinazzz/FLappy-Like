@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D (Collider2D collision)
     {
-        if (collision.TryGetComponent(out IObstacle wall) || (collision.TryGetComponent(out IDamagable player) && _isEnemyBullet == true) || (collision.TryGetComponent(out IDamagable enemy) && _isEnemyBullet == false))
+        if (collision.TryGetComponent<IObstacle>(out _) || (collision.TryGetComponent<IDamagable>(out _)))
         {
             Destroy(gameObject);
         }        
