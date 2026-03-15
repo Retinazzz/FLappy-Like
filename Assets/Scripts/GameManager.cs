@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour, IService
     [SerializeField] private GameObject _player;
     [SerializeField] private Score _score;
     
-    public UnityEvent <GameState> OnGameStateChanged;
+    public event Action <GameState> OnGameStateChanged;
     
     public enum GameState
     {
@@ -26,21 +26,17 @@ public class GameManager : MonoBehaviour, IService
                 _currentState = value;                
             }
         }
-    }       
-
-    public void Init()
-    {
-        ServiceLocator.Get<GameManager>();
-    }
+    }        
 
     private void Start()
     {
         StartGame();
+        PlayerDeath.OnPlayerDied += FinishGame;
     }
 
     private void StartGame()
     {
-        ChangeState(GameState.PlayScreen);
+        ChangeState(GameState.PlayScreen);        
     }
 
     public void ChangeState(GameState newState)
@@ -74,7 +70,7 @@ public class GameManager : MonoBehaviour, IService
         Time.timeScale = 1f;        
         Debug.Log("Entered Play Screen");
         Instantiate(_player);
-        _score.ResetScore();
+        _score.ResetScore();        
     }
 
     private void EnterDeathScreen()
@@ -84,24 +80,29 @@ public class GameManager : MonoBehaviour, IService
         _score.ShowScoreOnDeath();        
     }
 
-    public void PlayerDied()
+    public void FinishGame()
     {        
         Debug.Log("PlayerDIed");
         ChangeState(GameState.DeathScreen);
     }
+
     public void RestartGame()
-    {
+    {        
         ChangeState(GameState.PlayScreen);
         EnemyClear();
     }
 
-    void EnemyClear()
+    private void EnemyClear()
     {
         EnemyDeath [] allEnemies = FindObjectsOfType<EnemyDeath>();
         foreach (EnemyDeath enemy in allEnemies)
         {            
             Destroy(enemy.gameObject);                       
         }
+    }
+    private void OnDestroy()
+    {
+        PlayerDeath.OnPlayerDied -= FinishGame;
     }
 }
 

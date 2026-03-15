@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyDeath : MonoBehaviour , IService
+public class EnemyDeath : MonoBehaviour , IService , IDamagable
 {
     [SerializeField] private int _scoreValue = 1;
     [SerializeField] private BoxCollider2D _col;
@@ -8,7 +8,7 @@ public class EnemyDeath : MonoBehaviour , IService
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out IObstacle wall) || collision.TryGetComponent(out IDamagable player) || (collision.TryGetComponent(out Bullet bullet) && bullet._isEnemy == false))
+        if (collision.TryGetComponent<IObstacle>(out _) || collision.TryGetComponent<IDamagable>(out _) || (collision.TryGetComponent(out Bullet bullet) && bullet.IsEnemyBullet == false))
         {
             Debug.Log("Lomaysa hOmyak");
             Die();

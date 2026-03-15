@@ -15,6 +15,10 @@ public class ServiceLocator
     public static void Register<T>(T service) where T : IService
     {
         string key = typeof(T).Name;
+        if (_services.ContainsKey(key))
+        {
+            throw new InvalidOperationException();
+        }
         _services.Add(key, service);
     }
     

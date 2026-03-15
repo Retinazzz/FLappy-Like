@@ -4,16 +4,13 @@ using static GameManager;
 public class UI: MonoBehaviour , IService
 {    
     [SerializeField] private GameObject _playScreenPanel;
-    [SerializeField] private GameObject _deathScreenPanel;      
-                
+    [SerializeField] private GameObject _deathScreenPanel;
+    private  GameManager _gameManager;    
+
     private void Start()
-    {        
-        if (ServiceLocator.Get<GameManager>() == null)
-        {
-            Debug.LogError("GameManager не найден!");
-            return;
-        }        
-        ServiceLocator.Get<GameManager>().OnGameStateChanged.AddListener(StateChanged);        
+    {
+        _gameManager = ServiceLocator.Get<GameManager>();
+        _gameManager.OnGameStateChanged += StateChanged;        
     }
 
     public void StateChanged(GameState newState)
@@ -50,10 +47,10 @@ public class UI: MonoBehaviour , IService
 
     public void OnRestartButtonClicked()
     {
-        ServiceLocator.Get<GameManager>().RestartGame();
+        _gameManager.RestartGame();
     }
     private void OnDisable()
     {
-        ServiceLocator.Get<GameManager>().OnGameStateChanged.RemoveAllListeners();
+        _gameManager.OnGameStateChanged -= StateChanged;
     }
 }

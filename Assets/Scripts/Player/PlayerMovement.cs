@@ -1,10 +1,6 @@
 using System;
 using UnityEngine;
 
-public interface IDamagable
-{
-
-}
 public class PlayerMovement : MonoBehaviour , IDamagable , IService
 {    
     [SerializeField] private Rigidbody2D _jumper;
@@ -12,10 +8,9 @@ public class PlayerMovement : MonoBehaviour , IDamagable , IService
     private Vector2 _posToJump;
     private IInputSystem  _inputSystem;    
 
-    private void Awake()
-    {       
-        _inputSystem = new InputSystem();
-        Init(_inputSystem);
+    private void Start()
+    {        
+        Init();
     }
 
     private void Update()
@@ -26,9 +21,9 @@ public class PlayerMovement : MonoBehaviour , IDamagable , IService
         }          
     }
 
-    public void Init(IInputSystem inputSystem)
+    public void Init()
     {
-        _inputSystem = inputSystem;
+        _inputSystem = ServiceLocator.Get<IInputSystem>();
         _inputSystem.JumpClicked += OnJumpButtonClicked;
     }
 

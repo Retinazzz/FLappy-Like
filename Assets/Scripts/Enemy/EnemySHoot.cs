@@ -5,12 +5,7 @@ public class EnemyShoot : MonoBehaviour
     [SerializeField] private float _shootingInterval = 2f;
     [SerializeField] private GameObject _bullet;
     [SerializeField] private Transform _shootingPoint;
-    private float _timer = 0f;
-
-    private void Awake()
-    {
-        _shootingPoint = GetComponent<Transform>();
-    }
+    private float _timer = 0f;    
 
     private void Update()
     {

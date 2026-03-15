@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ServiceLoader : MonoBehaviour
-{
-    [SerializeField] private PlayerMovement _player;
+{    
     [SerializeField] private EnemyDeath _enemy;
     [SerializeField] private GameManager _gameManager1;
+    [SerializeField] private PlayerDeath _player;    
     private GameManager _gameManager;
     private UI _ui;
-
+    
     private void Awake()
     {        
         RegisterServices();
@@ -18,11 +18,13 @@ public class ServiceLoader : MonoBehaviour
 
     private void RegisterServices()
     {
-        ServiceLocator.Initialize();        
+        ServiceLocator.Initialize();
+        IInputSystem InputSystem = new InputSystem();
+        ServiceLocator.Register<IInputSystem>(InputSystem);
+        ServiceLocator.Register(_gameManager1);        
         ServiceLocator.Register(_player);
-        ServiceLocator.Register(_gameManager1);
         ServiceLocator.Register(_ui);
-        ServiceLocator.Register(_enemy);
+        ServiceLocator.Register(_enemy);        
     }
 
     private void Init()
@@ -31,5 +33,6 @@ public class ServiceLoader : MonoBehaviour
         //_gameManager.Init();
         //_ui.Init();
         //_enemy.Init();
+        //_inputSystem.Init();
     }
 }

@@ -6,10 +6,9 @@ public class Shoot : MonoBehaviour
     [SerializeField] Transform _shootingPoint;
     private IInputSystem _inputSystem;
 
-    private void Awake()
-    {
-        _inputSystem = new InputSystem();
-        Init(_inputSystem);
+    private void Start()
+    {        
+        Init();
     }
 
     private void Update()
@@ -20,9 +19,9 @@ public class Shoot : MonoBehaviour
         }
     }
 
-    public void Init(IInputSystem inputSystem)
+    public void Init()
     {
-        _inputSystem = inputSystem;
+        _inputSystem = ServiceLocator.Get<IInputSystem>();
         _inputSystem.FireClicked += OnFireButtonClicked;
     }
 

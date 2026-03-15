@@ -4,10 +4,11 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float _speed = 100f;
     [SerializeField] private int _shootingDistance;
-    [SerializeField] private GameObject _bullet;    
+    [SerializeField] private GameObject _bullet;
+    [SerializeField] private bool _isEnemyBullet;
     private Vector2 _target;
 
-    public bool _isEnemy;
+    public bool IsEnemyBullet => _isEnemyBullet;
 
     private void Awake ()
     {
@@ -21,7 +22,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D (Collider2D collision)
     {
-        if (collision.TryGetComponent(out IObstacle wall) || (collision.TryGetComponent(out IDamagable player) && _isEnemy == true) || (collision.TryGetComponent(out IDamagable enemy) && _isEnemy == false))
+        if (collision.TryGetComponent(out IObstacle wall) || (collision.TryGetComponent(out IDamagable player) && _isEnemyBullet == true) || (collision.TryGetComponent(out IDamagable enemy) && _isEnemyBullet == false))
         {
             Destroy(gameObject);
         }        
